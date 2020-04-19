@@ -9,7 +9,7 @@ def convert_datetime(text):
 	"""Replace date format June 06, 2020 to 2020-06-06"""
 	return str(parse(text).date())
 
-def preprocess_text(sample):
+def preprocess(sample):
 	# 1. Remove non-letters        
     letters_only = re.sub("[^a-zA-Z]", " ", sample) 
     #

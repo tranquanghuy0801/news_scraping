@@ -2,9 +2,15 @@
 
 This project intends to analyse reliable Australian source news and displays the statistics with dashboards. More detailed information will be updated soon.
 
+## Last Update (19/04/2020)
+
+Dashboard made with Dash & Plotly
+
+![Draft Dashboard](images/draft-dashboard.png)
+
 ## Update the project progress
 
-- [ ] Crawl the news
+- [ ] <b>Crawl the news</b>
   - [x] ABC News
   - [x] The Sydney Morning Herald
   - [ ] The Australian Financial Review
@@ -14,9 +20,17 @@ This project intends to analyse reliable Australian source news and displays the
   - [ ] Northern Territory News
   - [ ] The Courier-Mail
   - [ ] The West Australian
-- [ ] analyze the news
-- [ ] make a dashboard visualization
-- [ ] deploy real-time website
+- [ ] <b>Analyze the news</b>
+  - [x] preprocess the text
+  - [x] sentiment analysis on header
+  - [ ] sentiment analysis on header + content  
+  - [ ] topic modelling using LDA
+- [ ] <b>Make a dashboarb visualization</b>
+  - [x] make a draft dashboard
+  - [ ] add more features
+  - [ ] real-time update
+- [ ] <b>Deploy real-time website</b>
+- [ ] <b> Monitor website & upgrade plans</b>
 
 ## Authors
 

@@ -55,15 +55,16 @@ def preprocess_df(df: pd.DataFrame()) -> pd.DataFrame():
 	df.drop_duplicates(subset="link",keep=False, inplace=True)
 	# Convert time in datetime 
 	df['date'] = df['date'].apply(lambda text: convert_datetime(text))
-	df['header'] = df['header'].apply(lambda text: preprocess_text(text))
+	df['header'] = df['header'].apply(lambda text: preprocess(text))
 	df['score'] = df['header'].apply(lambda text: sentiment_score(text))
 	df['label'] = df['score'].apply(lambda text: sentiment_label(text))
 
 	return df
 
 
-abc_df = merge_csv_files('../data/abc_10_Apr_2020')
+abc_df = merge_csv_files('../raw_data/abc_10_Apr_2020')
 abc_df = preprocess_df(abc_df)
 print(abc_df.head(10))
 print(abc_df.shape)
+abc_df.to_csv('../processed_data/abc_10_Apr_2020.csv')
 # print(sentiment_score("Pearls out, protests in: This generation of grandmothers is kicking the tired cliches aside"))

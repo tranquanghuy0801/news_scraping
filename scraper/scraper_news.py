@@ -111,7 +111,7 @@ def scrape_abc(link: str, save_dir: str):
 # main run 
 if __name__ == "__main__":
 	smh_headers = ['home','sydney','nsw','politics','business','world','national','sport','culture','lifestyle','money','education','healthcare','environment','technology']
-	save_folder = "../data/smh_" + date
+	save_folder = "../raw_data/smh_" + date
 	if not os.path.exists(save_folder):
 		os.mkdir(save_folder)
 	for header in smh_headers:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 		scrape_smh("https://www.smh.com.au/" + header,"a", save_dir)
 	
 	# abc_headers = ['justin','politics','business','world','analysis-and-opinion','sport','science','health','arts-culture','factcheck','environment','technology','entertainment','music','rural']
-	# save_folder = "../data/abc_" + date
+	# save_folder = "../raw_data/abc_" + date
 	# if not os.path.exists(save_folder):
 	# 	os.mkdir(save_folder)
 	# for header in abc_headers:
