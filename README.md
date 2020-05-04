@@ -2,11 +2,11 @@
 
 This project intends to analyse reliable Australian source news and displays the statistics with dashboards. More detailed information will be updated soon.
 
-## Last Update (19/04/2020)
+## Last Update (04/05/2020)
 
 Dashboard made with Dash & Plotly
 
-![Draft Dashboard](images/draft-dashboard.png)
+![Draft Dashboard](images/dashboard.png)
 
 ## Update the project progress
 
