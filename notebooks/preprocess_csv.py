@@ -1,9 +1,11 @@
 import pandas as pd
+import numpy as np
 import os
-import fnmatch
 import glob
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn import decomposition
 from preprocess_text import *
 from textblob import TextBlob
 from datetime import datetime
@@ -19,7 +21,7 @@ def convert_datetime(text):
 	except:
 		return ""
 
-def merge_csv_files(directory: str,pattern = "*.csv") -> pd.DataFrame(): 
+def merge_csv_files(directory: str,pattern = ".csv") -> pd.DataFrame(): 
 
 	# Initialize DataFrame
 	df = pd.DataFrame()
@@ -30,7 +32,7 @@ def merge_csv_files(directory: str,pattern = "*.csv") -> pd.DataFrame():
 			folder = os.path.join(directory,folder)
 			for root, dirs, files in os.walk(folder):
 				for basename in files:
-					if fnmatch.fnmatch(basename, pattern):
+					if basename.endswith(pattern):
 						filename = os.path.join(root, basename)
 						print(filename)
 						csv_df = pd.read_csv(filename,header=None,names=['link','header','article','author','date'])
@@ -67,6 +69,41 @@ def sentiment_label(score: int) -> str:
 		sentiment_label = "neutral"
 	return sentiment_label
 
+def topic_extractions(df):
+	vectorizer = CountVectorizer(stop_words='english')
+	X_train = df['article']
+	X_train_dtm = vectorizer.fit_transform(X_train)
+	vocab = np.array(vectorizer.get_feature_names())
+
+	"Generating Decomposition Model to extract topics"
+	num_topics = 5
+	num_top_words = 5
+	clf = decomposition.NMF(n_components=num_topics,random_state=1)
+	doctopic = clf.fit_transform(X_train_dtm)
+
+	"Generating dominant topics for each words"
+	topic_words = []
+	for topic in clf.components_:
+		word_idx = np.argsort(topic)[::-1][0:num_top_words]
+		topic_words.append([vocab[i] for i in word_idx])
+
+	# Making DataFrame that gets the doctopic (values of topics for each text)
+	dftopic = pd.DataFrame(doctopic,columns=topic_words)
+	dftopicinv=dftopic.T
+
+	# Getting the dominant topic
+	topic_series = []
+	for i in np.arange(dftopic.shape[0]):
+		topic_series.append(dftopicinv[i].idxmax())
+
+	df['toptopic'] = topic_series
+
+	# Getting top dominant topics and count them
+	# topic_count = df.toptopic.value_counts().rename_axis('vals').reset_index(name='count')
+	# topic_count['vals'] = topic_count['vals'].apply(lambda x: ",".join([i for i in x]))
+
+	return df
+
 def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
 	# Remove the first row of dataframe
 	df = df.iloc[1:]
@@ -77,15 +114,19 @@ def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
 	df['date'] = df['date'].apply(lambda text: convert_datetime(text))
 	df['header'] = df['header'].apply(lambda text: preprocess(text))
 	df['article'] = df['article'].apply(lambda text: preprocess(text))
-	df['score'] = df['header'].apply(lambda text: sentiment_score(text))
+	df['score'] = df.apply(lambda text: sentiment_score(text['header']+ text['article']),axis=1)
 	df['label'] = df['score'].apply(lambda text: sentiment_label(text))
+	df = topic_extractions(df)
+	# Drop column 
+	df.drop(['link','article','author'], axis=1, inplace=True)
 
 	return df
 
-save_dir = "../processed_data/news_" + date + ".csv"
-abc_df = merge_csv_files('../raw_data')
-abc_df = clean_df(abc_df)
-print(abc_df.head(10))
-print(abc_df.shape)
-abc_df.to_csv(save_dir)
-# print(sentiment_score("Pearls out, protests in: This generation of grandmothers is kicking the tired cliches aside"))
+if __name__ == '__main__':
+	save_dir = "../processed_data/news_" + date + ".csv"
+	abc_df = merge_csv_files('../raw_data')
+	abc_df = clean_df(abc_df)
+	print(abc_df.head(10))
+	print(abc_df.shape)
+	abc_df.to_csv(save_dir,header=False,index=False)
+	# print(sentiment_score("Pearls out, protests in: This generation of grandmothers is kicking the tired cliches aside"))

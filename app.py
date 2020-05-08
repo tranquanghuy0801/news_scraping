@@ -4,18 +4,19 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly
 import plotly.graph_objs as go
+import flask
+from random import randint
 import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn import decomposition
-from datetime import datetime
+import psycopg2
+import os
+from dotenv import load_dotenv
+load_dotenv(verbose=True)
 
-# initialize datetime 
-date = datetime.now().strftime("%d_%b_%Y")
-
-vectorizer = CountVectorizer(stop_words='english')
-df = pd.read_csv('../processed_data/news_' + date + '.csv')
-df = df.iloc[np.random.permutation(len(df))]
+DATABASE_URL = os.environ['DATABASE_URL']
+TABLE_NAME = os.environ['TABLE_NAME']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+query = "SELECT * FROM {}".format(TABLE_NAME)
+df = pd.read_sql(query, con=conn)
 
 app_colors = {
 	'background': '#0C0F0A',
@@ -27,8 +28,9 @@ app_colors = {
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash("Real-Time Australian News Analysis",external_stylesheets=external_stylesheets)
-server = app.server
+server = flask.Flask(__name__)
+server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
+app = dash.Dash("Real-Time Australian News Analysis",external_stylesheets=external_stylesheets,server=server)
 
 app.layout = html.Div(children=[
 	html.H2('Real-Time Australian News Analysis', style={
@@ -118,45 +120,10 @@ app.layout = html.Div(children=[
 					)                    
 				]
 			)                                                          
-		], style={'marginLeft': 100, 'fontSize': 16}
+		], style={'marginLeft': 150, 'fontSize': 16}
 	),
 
 ],style={'padding': '20px'})
-
-def topic_extractions(df):
-	X_train = df['article']
-	X_train_dtm = vectorizer.fit_transform(X_train)
-	vocab = np.array(vectorizer.get_feature_names())
-
-	"Generating Decomposition Model to extract topics"
-	num_topics = 5
-	num_top_words = 5
-	clf = decomposition.NMF(n_components=num_topics,random_state=1)
-	doctopic = clf.fit_transform(X_train_dtm)
-
-	"Generating dominant topics for each words"
-	topic_words = []
-	for topic in clf.components_:
-		word_idx = np.argsort(topic)[::-1][0:num_top_words]
-		topic_words.append([vocab[i] for i in word_idx])
-
-	# Making DataFrame that gets the doctopic (values of topics for each text)
-	dftopic = pd.DataFrame(doctopic,columns=topic_words)
-	dftopicinv=dftopic.T
-
-	# Getting the dominant topic
-	topic_series = []
-	for i in np.arange(dftopic.shape[0]):
-		topic_series.append(dftopicinv[i].idxmax())
-
-	df['toptopic'] = topic_series
-
-	# Getting top dominant topics and count them
-	topic_count = df.toptopic.value_counts().rename_axis('vals').reset_index(name='count')
-	topic_count['vals'] = topic_count['vals'].apply(lambda x: ",".join([i for i in x]))
-
-	return topic_count
-
 
 @app.callback(Output('live-update-graph', 'children'),
 			[Input('source-news','value')])
@@ -173,13 +140,14 @@ def update_graph_live(source):
 		count_labels = df_labels['count']
 
 		# do the topic extractions
-		topics = topic_extractions(data)
+		topics = data['topic'].value_counts().rename_axis('vals').reset_index(name='count')
+		topics['vals'] = topics['vals'].apply(lambda x: "".join([i for i in x]))
 		count_topics = topics['count']
 		val_topics = topics['vals']
 			
 	else:
 		count_topics = [0,0,0,0,0]
-		val_topics = count_topics
+		val_topics = [0,0,0,0,0]
 		count_labels = [0,0,0]
 
 	# Create visualization graph
@@ -239,4 +207,4 @@ def update_graph_live(source):
 	return children
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
+	app.server.run(debug=True,threaded=True)

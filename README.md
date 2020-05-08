@@ -23,13 +23,15 @@ Dashboard made with Dash & Plotly
 - [ ] <b>Analyze the news</b>
   - [x] preprocess the text
   - [x] sentiment analysis on header
-  - [ ] sentiment analysis on header + content  
-  - [ ] topic modelling using LDA
+  - [x] sentiment analysis on header + content  
+  - [x] topic modelling using LDA
 - [ ] <b>Make a dashboarb visualization</b>
   - [x] make a draft dashboard
-  - [ ] add more features
-  - [ ] real-time update
+  - [ ] change bar graph to word cloud
 - [ ] <b>Deploy real-time website</b>
+  - [x] deploy website
+  - [ ] set up continuous deployment
+  - [ ] real-time update
 - [ ] <b> Monitor website & upgrade plans</b>
 
 ## Authors

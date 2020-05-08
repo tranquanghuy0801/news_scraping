@@ -11,6 +11,7 @@ env/
 data/
 raw_data/
 processed_data/
+web/.env
 
 # Distribution / packaging
 .Python
