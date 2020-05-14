@@ -21,7 +21,7 @@ Dashboard made with Dash & Plotly
   - [ ] The Courier-Mail
   - [ ] The West Australian
 - [ ] <b>Analyze the news</b>
-  - [x] preprocess the text
+  - [ ] preprocess the text
   - [x] sentiment analysis on header
   - [x] sentiment analysis on header + content  
   - [x] topic modelling using LDA
