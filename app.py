@@ -9,11 +9,9 @@ from random import randint
 import pandas as pd
 import psycopg2
 import os
-from dotenv import load_dotenv
-load_dotenv(verbose=True)
 
-DATABASE_URL = os.environ['DATABASE_URL']
-TABLE_NAME = os.environ['TABLE_NAME']
+DATABASE_URL = os.environ.get('DATABASE_URL')
+TABLE_NAME = os.environ.get('TABLE_NAME')
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 query = "SELECT * FROM {}".format(TABLE_NAME)
 df = pd.read_sql(query, con=conn)
@@ -28,10 +26,12 @@ app_colors = {
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
+# Define app server
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 app = dash.Dash("Real-Time Australian News Analysis",external_stylesheets=external_stylesheets,server=server)
 
+# App Layout
 app.layout = html.Div(children=[
 	html.H2('Real-Time Australian News Analysis', style={
 		'textAlign': 'center'
@@ -206,5 +206,6 @@ def update_graph_live(source):
 
 	return children
 
+# Main App Run
 if __name__ == '__main__':
 	app.server.run(debug=True,threaded=True)
