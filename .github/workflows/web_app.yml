@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest]
         python: [3.6, 3.7]
 
     steps:
@@ -30,6 +30,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Download nltk punkt
+      run: |
+        python -c 'import nltk; nltk.download("punkt")'
     - name: Lint with pylint
       run: |
         # stop the build if there are Python syntax errors or undefined names
