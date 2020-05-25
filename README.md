@@ -1,8 +1,10 @@
 # Australian News Analytics Dashboard
 
+![build](https://github.com/tranquanghuy0801/news_scraping/workflows/Python%20Web%20Analytics%20application/badge.svg)
+
 This project intends to analyse reliable Australian source news and displays the statistics with dashboards. More detailed information will be updated soon.
 
-## Last Update (04/05/2020)
+## Last Update (25/05/2020)
 
 Dashboard made with Dash & Plotly
 
@@ -30,7 +32,7 @@ Dashboard made with Dash & Plotly
   - [ ] change bar graph to word cloud
 - [ ] <b>Deploy real-time website</b>
   - [x] deploy website
-  - [ ] set up continuous deployment
+  - [x] set up CI/CD pipeline using Github Actions & Heroku
   - [ ] real-time update
 - [ ] <b> Monitor website & upgrade plans</b>
 

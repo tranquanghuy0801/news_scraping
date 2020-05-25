@@ -9,10 +9,6 @@ v = {editable = true,version = "*"}
 pytest = "*"
 coverage = "*"
 autopep8 = "*"
-sklearn = "*"
-textblob = "*"
-contractions = "*"
-inflect = "*"
 
 [packages]
 gunicorn = ">=19.7.1"
@@ -26,6 +22,10 @@ pandas = "==0.25.3"
 psycopg2 = "==2.8.5"
 Flask = "==1.1.2"
 newspaper3k = "*"
+textblob = "*"
+sklearn = "*"
+contractions = "*"
+inflect = "*"
 
 [requires]
 python_version = "3.6"
