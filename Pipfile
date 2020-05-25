@@ -1,0 +1,31 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+v = {editable = true,version = "*"}
+pytest = "*"
+coverage = "*"
+autopep8 = "*"
+sklearn = "*"
+textblob = "*"
+contractions = "*"
+inflect = "*"
+
+[packages]
+gunicorn = ">=19.7.1"
+plotly = ">=2.0.9"
+dash = "==1.11.0"
+dash-core-components = "==1.9.1"
+dash-html-components = "==1.0.3"
+dash-renderer = "==1.4.0"
+dash-table = "==4.6.2"
+pandas = "==0.25.3"
+psycopg2 = "==2.8.5"
+Flask = "==1.1.2"
+newspaper3k = "*"
+
+[requires]
+python_version = "3.6"
