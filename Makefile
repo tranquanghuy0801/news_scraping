@@ -33,4 +33,4 @@ lock-req:
 	sh -c 'pipenv lock -r > requirements.txt'
 
 clean:
-	rm -rf .DS_Store .pytest_cache .tmontmp .coverage .testmondata htmlcov build dist flaskr.egg-info
+	rm -rf .tox .DS_Store .pytest_cache .tmontmp .coverage .testmondata htmlcov build dist *.egg-info

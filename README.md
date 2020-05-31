@@ -36,6 +36,39 @@ Dashboard made with Dash & Plotly
   - [ ] real-time update
 - [ ] <b> Monitor website & upgrade plans</b>
 
+## Instructions
+
+#### Install the dependency
+
+- Using pipenv
+
+```
+pip install pipenv
+pipenv install --dev
+```
+
+- Using virtualenv
+
+```
+virtualenv -p python3 <name_env>
+source <name_env>/bin/activate
+pip install -r requirements.txt
+```
+
+### Create .env
+
+- Create a file <b>.env</b> in the main directory and add the code below and replace the information
+
+```
+DATABASE_URL='*****'
+TABLE_NAME='*****'
+secret_key='*****'
+```  
+
+#### Run Commands
+
+- See <b>Makefile</b> for more instructions
+
 ## Authors
 
 - **Harry Tran**

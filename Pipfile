@@ -5,27 +5,26 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
-v = {editable = true,version = "*"}
+v = {version = "*",editable = true}
 pytest = "*"
 coverage = "*"
 autopep8 = "*"
 
 [packages]
-gunicorn = ">=19.7.1"
-plotly = ">=2.0.9"
-dash = "==1.11.0"
-dash-core-components = "==1.9.1"
-dash-html-components = "==1.0.3"
-dash-renderer = "==1.4.0"
-dash-table = "==4.6.2"
-pandas = "==0.25.3"
-psycopg2 = "==2.8.5"
-Flask = "==1.1.2"
+gunicorn = "*"
+plotly = "*"
+dash = "*"
+dash-core-components = "*"
+dash-html-components = "*"
+dash-renderer = "*"
+dash-table = "*"
+pandas = "*"
+psycopg2 = "*"
+Flask = "*"
 newspaper3k = "*"
 textblob = "*"
 sklearn = "*"
 contractions = "*"
 inflect = "*"
-
-[requires]
-python_version = "3.6"
+tox-pipenv = "*"
+nltk = "*"

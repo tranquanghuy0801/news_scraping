@@ -4,6 +4,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as bs
 import pandas as pd
+from newspaper import Article
 
 # initialize datetime
 date = datetime.now().strftime("%d_%b_%Y")
