@@ -5,10 +5,10 @@ from nltk.corpus import stopwords
 import inflect
 import contractions
 
+
 def replace_contractions(text: str) -> str:
     """Replace contractions in string of text"""
     return contractions.fix(text)
-
 
 def remove_URL(sample: str) -> str:
     """Remove URLs from a sample string"""

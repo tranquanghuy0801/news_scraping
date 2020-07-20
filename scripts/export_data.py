@@ -16,7 +16,7 @@ def convert_datetime(text: str) -> str:
     """Replace date format June 06, 2020 to 2020-06-06"""
     try:
         return str(parse(text).date())
-    except TypeError as ex:
+    except Exception as ex:
         print(ex)
         return ""
 
@@ -38,7 +38,7 @@ def merge_csv_files(directory: str, pattern=".csv") -> pd.DataFrame():
                         csv_df = pd.read_csv(filename, header=None, names=[
                                              'link', 'header', 'article', 'author', 'date'])
                         csv_df['source'] = filename.replace(
-                            '../raw_data/', '')[:3]
+                            'raw_data/', '')[:3]
                         # Merge all CSV files
                         df = pd.concat([csv_df, df], ignore_index=False)
 
@@ -101,16 +101,10 @@ def topic_extractions(df):
 
     df['toptopic'] = topic_series
 
-    # Getting top dominant topics and count them
-    # topic_count = df.toptopic.value_counts().rename_axis('vals').reset_index(name='count')
-    # topic_count['vals'] = topic_count['vals'].apply(lambda x: ",".join([i for i in x]))
-
     return df
-
 
 def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
     # Remove the first row of dataframe
-    df = df.iloc[1:]
     df = df[df['header'] != '']
     # Remove duplicated rows with the same link
     df.drop_duplicates(subset="link", keep=False, inplace=True)
@@ -122,16 +116,6 @@ def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
         text['header'] + text['article']), axis=1)
     df['label'] = df['score'].apply(lambda text: sentiment_label(text))
     df = topic_extractions(df)
-    # Drop column
-    df.drop(['link', 'article', 'author'], axis=1, inplace=True)
 
     return df
 
-
-if __name__ == '__main__':
-    save_dir = "processed_data/news_" + date + ".csv"
-    abc_df = merge_csv_files('raw_data')
-    abc_df = clean_df(abc_df)
-    print(abc_df.head(10))
-    print(abc_df.shape)
-    abc_df.to_csv(save_dir, header=False, index=False)

@@ -7,13 +7,14 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import flask
 import pandas as pd
-import psycopg2
+import pymongo
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 TABLE_NAME = os.environ.get('TABLE_NAME')
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-query = "SELECT * FROM {}".format(TABLE_NAME)
-df = pd.read_sql(query, con=conn)
+MONGO_URL = os.environ.get('MONGO_URL')
+client = pymongo.MongoClient(MONGO_URL)
+collection = client.db.news
+df = pd.DataFrame(list(collection.find()))
 
 app_colors = {
     'background': '#0C0F0A',
@@ -141,7 +142,7 @@ def update_graph_live(source):
         count_labels = df_labels['count']
 
         # do the topic extractions
-        topics = data['topic'].value_counts().rename_axis(
+        topics = data['toptopic'].value_counts().rename_axis(
             'vals').reset_index(name='count')
         topics['vals'] = topics['vals'].apply(
             lambda x: "".join(list(x)))

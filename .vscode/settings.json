@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/tranquanghuy/news_scraping/env/bin/python3.7"
+    "python.pythonPath": "/Users/tranquanghuy/.local/share/virtualenvs/news_scraping-tL0Z5-7k/bin/python",
+    "python.linting.pylintEnabled": true
 }

@@ -5,7 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
-v = {version = "*",editable = true}
+v = {editable = true,version = "*"}
 pytest = "*"
 coverage = "*"
 autopep8 = "*"
@@ -19,12 +19,11 @@ dash-html-components = "*"
 dash-renderer = "*"
 dash-table = "*"
 pandas = "*"
-psycopg2 = "*"
 Flask = "*"
-newspaper3k = "*"
 textblob = "*"
 sklearn = "*"
 contractions = "*"
 inflect = "*"
 tox-pipenv = "*"
 nltk = "*"
+pymongo = "*"
