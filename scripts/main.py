@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from pymongo import MongoClient
-from scripts.export_data import clean_df
+from export_data import clean_df
 
 MONGO_URL = os.environ.get('MONGO_URL')
 

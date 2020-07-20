@@ -142,10 +142,10 @@ def update_graph_live(source):
         count_labels = df_labels['count']
 
         # do the topic extractions
-        topics = data['toptopic'].value_counts().rename_axis(
+        topics = data['toptopic'].apply(tuple).value_counts().rename_axis(
             'vals').reset_index(name='count')
         topics['vals'] = topics['vals'].apply(
-            lambda x: "".join(list(x)))
+            lambda x: ", ".join(list(x)))
         count_topics = topics['count']
         val_topics = topics['vals']
 

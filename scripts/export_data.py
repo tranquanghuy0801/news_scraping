@@ -103,8 +103,10 @@ def topic_extractions(df):
 
     return df
 
+
 def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
     # Remove the first row of dataframe
+    df = df.iloc[1:]
     df = df[df['header'] != '']
     # Remove duplicated rows with the same link
     df.drop_duplicates(subset="link", keep=False, inplace=True)
@@ -118,4 +120,3 @@ def clean_df(df: pd.DataFrame()) -> pd.DataFrame():
     df = topic_extractions(df)
 
     return df
-
